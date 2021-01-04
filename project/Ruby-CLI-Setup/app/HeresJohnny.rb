@@ -55,7 +55,9 @@ class HeresJohnny
     sleep(1)
     puts restrooms
     puts "Which would you like to visit?"
-    @used_restroom = get_input
+    restroom = get_input
+    # binding.pry
+    @used_restroom = Restroom.find_by(address: restroom)
     puts "when you gotta go you gotta go! so go!!!"
     4.times do 
       sleep(1)
@@ -85,9 +87,24 @@ class HeresJohnny
   end
 
   def review
+  puts "on a scale of 1-5, how would you rate this restroom?"
+  new_rating = get_input.to_i
+  # binding.pry
+  Review.create(user_id: @user.id, restroom_id: @used_restroom.id, rating: new_rating) 
+  puts "Thank you for you're feedback!"
+  puts "Would you like to see all of your reviews?"
+  input = get_input
+  if input == "yes"
+    check_reviews
+    else 
+      puts "Goodbye!!"
+      exit!
   end
+end
 
   def check_reviews
+    pp @user.reviews
+
   end
 
 
