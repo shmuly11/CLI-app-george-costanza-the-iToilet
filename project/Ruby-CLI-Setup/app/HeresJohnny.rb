@@ -8,6 +8,7 @@ class HeresJohnny
     gotta_go
     # wanna_see_favs?
     # get_joke(what_subject)
+    puts "Goodbye!"
   end
 
   def welcome
@@ -57,7 +58,8 @@ class HeresJohnny
     puts "Which would you like to visit?"
     restroom = get_input
     # binding.pry
-    @used_restroom = Restroom.find_by(address: restroom)
+    get_restroom_instance(restroom)
+    @used_restroom = get_restroom_instance(restroom)
     puts "when you gotta go you gotta go! so go!!!"
     4.times do 
       sleep(1)
@@ -111,6 +113,7 @@ end
     
     listicle = addy.zip rate
     listicle.each{|x|puts"You gave #{x[0]} a rating of  #{x[1]}!"}
+    update_review 
     
     # Uses a hash
     # listicle = Hash[addy.zip rate]
@@ -118,8 +121,33 @@ end
   end
 
   def update_review
+    puts "Please type a restaurant to review"
+    restroom = get_input
+    restroom_instance = get_restroom_instance(restroom)
+    puts "please rate from 1-5"
+    rating = get_input.to_i
+    reviewed = Review.find_by(user_id: @user.id, restroom_id: restroom_instance.id)
+    #binding.pry
+    reviewed.update(rating: rating)
+    puts "Thank you for you're feedback! Your #{restroom} rating has been updated to #{rating}!"
+    delete_review
+  end
+
+  def get_restroom_instance(restroom)
+    restroom_instance = Restroom.find_by(address: restroom)
+  end
+
+  def delete_review
+    puts "Which review would you like to delete?"
+    restroom = get_input
+    restroom_instance = get_restroom_instance(restroom)
+    reviewed = Review.find_by(user_id: @user.id, restroom_id: restroom_instance.id)
+    reviewed.destroy
+    puts "You have successfully destroyed your review!"
 
   end
+
+
 
   
   private
