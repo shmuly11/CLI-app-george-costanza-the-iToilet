@@ -103,6 +103,7 @@ class HeresJohnny
 end
 
   def check_reviews
+    binding.pry
     pp @user.reviews
 
   end
