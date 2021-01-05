@@ -103,12 +103,25 @@ class HeresJohnny
 end
 
   def check_reviews
-    binding.pry
-    pp @user.reviews
+    # puts @user.restrooms.pluck (:address)
+    # binding.pry
+    addy = @user.reviews.map{|x|Restroom.where(id: x.restroom_id).pluck(:address)}.flatten
+    rate = @user.reviews.pluck (:rating)
+    # binding.pry
+    
+    listicle = addy.zip rate
+    listicle.each{|x|puts"You gave #{x[0]} a rating of  #{x[1]}!"}
+    
+    # Uses a hash
+    # listicle = Hash[addy.zip rate]
+    # listicle.each{|k,v| puts "You gave #{k} a rating of #{v}!"}
+  end
+
+  def update_review
 
   end
 
-
+  
   private
 
   
