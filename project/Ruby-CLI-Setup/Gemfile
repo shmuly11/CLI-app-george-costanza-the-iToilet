@@ -12,3 +12,4 @@ gem "faker"
 gem "colorize"
 
 gem 'activerecord-reset-pk-sequence'
+gem 'tty-prompt'

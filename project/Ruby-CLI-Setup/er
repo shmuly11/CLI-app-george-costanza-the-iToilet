@@ -1,0 +1,18 @@
+
+[1mFrom:[0m /home/nrepasy21/dev/flatiron/labs/mod_1_project_serenity_now/project/Ruby-CLI-Setup/app/HeresJohnny.rb @ line 110 HeresJohnny#check_reviews:
+
+    [1;34m105[0m: [32mdef[0m [1;34mcheck_reviews[0m
+    [1;34m106[0m:   [1;34m# puts @user.restrooms.pluck (:address)[0m
+    [1;34m107[0m:   [1;34m# binding.pry[0m
+    [1;34m108[0m:   addy = @user.reviews.map{|x|[1;34;4mRestroom[0m.where([35mid[0m: x.restroom_id).pluck([33m:address[0m)}.flatten
+    [1;34m109[0m:   rate = @user.reviews.pluck ([33m:rating[0m)
+ => [1;34m110[0m:   binding.pry
+    [1;34m111[0m: 
+    [1;34m112[0m:   listicle = addy.zip rate
+    [1;34m113[0m:   listicle.each{|x|puts[31m[1;31m"[0m[31mYou gave #{x[0]}[0m[31m a rating of  #{x[1]}[0m[31m![1;31m"[0m[31m[0m}
+    [1;34m114[0m:   
+    [1;34m115[0m:   [1;34m# Uses a hash[0m
+    [1;34m116[0m:   [1;34m# listicle = Hash[addy.zip rate][0m
+    [1;34m117[0m:   [1;34m# listicle.each{|k,v| puts "You gave #{k} a rating of #{v}!"}[0m
+    [1;34m118[0m: [32mend[0m
+
