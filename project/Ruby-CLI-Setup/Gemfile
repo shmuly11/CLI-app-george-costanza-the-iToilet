@@ -13,3 +13,4 @@ gem "colorize"
 
 gem 'activerecord-reset-pk-sequence'
 gem 'tty-prompt'
+gem 'kimurai'

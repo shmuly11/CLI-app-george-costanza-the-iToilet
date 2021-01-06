@@ -6,6 +6,8 @@ Area.reset_pk_sequence
 Review.reset_pk_sequence
 Restroom.reset_pk_sequence
 User.reset_pk_sequence
+Fact.destroy_all
+Fact.reset_pk_sequence
 
 ########### different ways to write your seeds ############
 
@@ -40,7 +42,17 @@ Review.create(user_id: 4, restroom_id: 3, rating: 4)
 Review.create(user_id: 3, restroom_id: 5, rating: 5)
 Review.create(user_id: 1, restroom_id: 7, rating: 1)
 
+$scraped_trivia = []
+TriviaScraper.crawl!
+$scraped_trivia.flatten.each do |fact|
+    Fact.create(content: fact.text)
+end
 
+2.times do
+    Fact.first.destroy
+end
+Fact.last.destroy
+Fact.reset_pk_sequence
 
 
 # 1: save everything to variables (makes it easy to connect models, best for when you want to be intentional about your seeds)
