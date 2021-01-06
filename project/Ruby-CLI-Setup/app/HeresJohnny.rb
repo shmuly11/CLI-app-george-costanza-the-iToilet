@@ -6,12 +6,19 @@ class HeresJohnny
 def  initialize
 @prompt = TTY::Prompt.new
 end
+       
+## create password
+## leave review comment
+## bathroom average rating
+## scrape for real data
+## seinfeld fluff
+## more fluff
+## 
+
 
   def run
-    
-    
-    
-     welcome
+    welcome
+    locate
     login_or_signup
     gotta_go
     in_session
@@ -72,7 +79,8 @@ end
   end
 
   def locate_user
-    input = prompt.select("where are you right now?", Area.all.pluck(:name)) 
+    input = prompt.select("where are you right now?", Area.all.pluck(:name), "↩️")
+    main_menu if input == "↩️" 
     area = Area.find_by(name: input)
     restrooms = Restroom.where(area_id: area.id).pluck(:address)
     puts "There are available restrooms at the following locations"
@@ -80,6 +88,7 @@ end
     # get_restroom_instance(restroom)
     @used_restroom = get_restroom_instance(restroom)
     puts "when you gotta go you gotta go! so go!!!"
+    in_session
   end
 
   def in_session  
@@ -88,6 +97,7 @@ end
       puts "💩"
     end
    sleep(1)
+   leave_review
   end
 
   def leave_review
@@ -121,12 +131,17 @@ end
     
     listicle = addy.zip rate
     listicle.each{|x|puts"You gave #{x[0]} a rating of  #{x[1]}!"}
-
+    #binding.pry
+    if @user.reviews.empty?
+      puts "You have no reviews" 
+      sleep(1) 
+      trivia
+    end
     prompt.select("Reviews:")  do |menu|
 
     menu.choice "Update Review",->{update_review}
     menu.choice "Delete Review",->{delete_review}
-    menu.choice  "Return to Menu",->{main_menu}
+    menu.choice  "↩️",->{main_menu}
     end
 
   
@@ -143,8 +158,12 @@ end
   end
 
   def update_review
-    restroom = prompt.select("Please select a review to update", @user.restrooms.pluck(:address))
-
+    #binding.pry
+    restroom = prompt.select("Please select a review to update", @user.restrooms.pluck(:address), "↩️")
+    check_reviews if restroom == "↩️"
+  #   if !@user.restrooms.empty?
+  # else
+  #     puts 
    
     restroom_instance = get_restroom_instance(restroom)
     rating = review_helper
@@ -167,24 +186,74 @@ end
     restroom_instance = Restroom.find_by(address: restroom)
   end
 
+  # def delete_review
+  #   ## added tty for delete
+  #   restroom = prompt.select("Please select a review to delete", @user.restrooms.pluck(:address))
+  #   ##puts "Which review would you like to delete?"
+  #   ##restroom = get_input
+  #   restroom_instance = get_restroom_instance(restroom)
+  #   reviewed = Review.find_by(user_id: @user.id, restroom_id: restroom_instance.id)
+  #   reviewed.destroy
+  #   puts "You have successfully destroyed your review!"
+  #   ## goes back to check review method
+
+  #   check_reviews
+
+  # end
+
   def delete_review
-    ## added tty for delete
-    restroom = prompt.select("Please select a review to delete", @user.restrooms.pluck(:address))
-    ##puts "Which review would you like to delete?"
-    ##restroom = get_input
-    restroom_instance = get_restroom_instance(restroom)
-    reviewed = Review.find_by(user_id: @user.id, restroom_id: restroom_instance.id)
-    reviewed.destroy
-    puts "You have successfully destroyed your review!"
-    ## goes back to check review method
-
-    check_reviews
-
+    puts 
+      restroom = prompt.select("Which review would you like to delete?", @user.restrooms.pluck(:address), "↩️")
+      check_reviews if restroom == "↩️"
+      # menu = (menu.choice  "Return to Menu",->{main_menu})
+      # restroom = get_input
+      restroom_instance = get_restroom_instance(restroom)
+      reviewed = Review.find_by(user_id: @user.id, restroom_id: restroom_instance.id)
+      delete = prompt.yes?("Are you sure you want to delete your review for #{restroom_instance.address}?")
+      if delete 
+        reviewed.destroy
+          sleep(1)
+      puts "You have successfully destroyed your review!"
+          sleep(1)
+     # puts "Returning to main menu."
+        check_reviews
+      else
+        check_reviews
+      end
   end
 
 ##fixed wrong words line 120 (restaurant to review)
+# def locate
+#   zipcode = prompt.ask("What zip code are you in?")
+#   binding.pry
+#   location = $converts[zipcode]
+# end
 
+def locate
+  location = prompt.collect do
+    key(:address).ask("Address?", required: true)
+    key(:city).ask("City?", required: true)
+    #key(:zip).ask("Zip?", validate: /\A\d{3}\Z/)
+  end
+  place = location.map{|k,v| "#{v}"}.join(", ")
+  map_response = location_request(place)
+  geo = convert_to_geo(map_response)
   
+  binding.pry
+end
+  
+# result = prompt.collect do
+#   key(:name).ask("Name?")
+
+#   key(:age).ask("Age?", convert: :int)
+
+#   key(:address) do
+#     key(:street).ask("Street?", required: true)
+#     key(:city).ask("City?")
+#     key(:zip).ask("Zip?", validate: /\A\d{3}\Z/)
+#   end
+#end
+
   private
 
   
