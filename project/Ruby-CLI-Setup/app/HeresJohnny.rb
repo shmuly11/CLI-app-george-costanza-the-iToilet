@@ -18,13 +18,11 @@ end
 
   def run
     welcome
-    locate
+    #locate
     login_or_signup
     gotta_go
     in_session
     leave_review
-    # wanna_see_favs?
-    # get_joke(what_subject)
     puts "Goodbye!"
   end
 
@@ -79,14 +77,16 @@ end
   end
 
   def locate_user
-    input = prompt.select("where are you right now?", Area.all.pluck(:name), "↩️")
-    main_menu if input == "↩️" 
-    area = Area.find_by(name: input)
-    restrooms = Restroom.where(area_id: area.id).pluck(:address)
-    puts "There are available restrooms at the following locations"
-    restroom =   prompt.select("Which would you like to visit?", restrooms)
+    # input = prompt.select("where are you right now?", Area.all.pluck(:name), "↩️")
+    # main_menu if input == "↩️" 
+    # area = Area.find_by(name: input)
+    # restrooms = Restroom.where(area_id: area.id).pluck(:address)
+
+    locate
+    # puts "There are available restrooms at the following locations"
+    # restroom = prompt.select("Which would you like to visit?", restrooms)
     # get_restroom_instance(restroom)
-    @used_restroom = get_restroom_instance(restroom)
+    @used_restroom = get_restroom_instance(@restroom_address)
     puts "when you gotta go you gotta go! so go!!!"
     in_session
   end
@@ -125,7 +125,7 @@ end
     ####need to add a reload method###
     @user.reviews.reload
    
-    addy = @user.reviews.map{|x|Restroom.where(id: x.restroom_id).pluck(:address)}.flatten
+    addy = @user.reviews.map{|x|Restroom.where(id: x.restroom_id).pluck(:name)}.flatten
     rate = @user.reviews.pluck (:rating)
     
     
@@ -159,13 +159,13 @@ end
 
   def update_review
     #binding.pry
-    restroom = prompt.select("Please select a review to update", @user.restrooms.pluck(:address), "↩️")
+    restroom = prompt.select("Please select a review to update", @user.restrooms.pluck(:name), "↩️")
     check_reviews if restroom == "↩️"
   #   if !@user.restrooms.empty?
   # else
   #     puts 
-   
-    restroom_instance = get_restroom_instance(restroom)
+    restroom_instance = Restroom.find_by(name: restroom)
+    #restroom_instance = get_restroom_instance(restroom)
     rating = review_helper
     reviewed = Review.find_by(user_id: @user.id, restroom_id: restroom_instance.id)
     reviewed.update(rating: rating)
@@ -183,7 +183,8 @@ end
   end
 
   def get_restroom_instance(restroom)
-    restroom_instance = Restroom.find_by(address: restroom)
+    #binding.pry
+    restroom_instance = Restroom.find_by(address: restroom[:value])
   end
 
   # def delete_review
@@ -203,13 +204,14 @@ end
 
   def delete_review
     puts 
-      restroom = prompt.select("Which review would you like to delete?", @user.restrooms.pluck(:address), "↩️")
+      restroom = prompt.select("Which review would you like to delete?", @user.restrooms.pluck(:name), "↩️")
       check_reviews if restroom == "↩️"
       # menu = (menu.choice  "Return to Menu",->{main_menu})
       # restroom = get_input
-      restroom_instance = get_restroom_instance(restroom)
+      restroom_instance = Restroom.find_by(name: restroom)
+      #restroom_instance = get_restroom_instance(restroom)
       reviewed = Review.find_by(user_id: @user.id, restroom_id: restroom_instance.id)
-      delete = prompt.yes?("Are you sure you want to delete your review for #{restroom_instance.address}?")
+      delete = prompt.yes?("Are you sure you want to delete your review for #{restroom_instance.name}?")
       if delete 
         reviewed.destroy
           sleep(1)
@@ -229,43 +231,41 @@ end
 #   location = $converts[zipcode]
 # end
 
-def locate
+def locate 
   location = prompt.collect do
-    key(:address).ask("What is your current address?", required: true, validate: /\w|\s/)
-    key(:city).ask("In which city?", required: true, validate: /[a-z]|\s/)
+    key(:address).ask("What is your current address?") do |q|
+      q.required true
+      q.validate(/\A\w|\s\Z/, "Please enter a valid street address")
+    end
+    key(:city).ask("In which city?") do |q|
+      q.required true 
+      q.validate(/\A[a-z]|\s\Z/, "Please enter a valid city")
+    end
   end
   place = location.map{|k,v| "#{v}"}.join(", ")
-  binding.pry
   map_response = location_request(place)
   geo = convert_to_geo(map_response)
-
-  binding.pry
-
-  # url = URI::HTTP.build(host: "www.refugerestrooms.org", path: "/api/v1/restrooms/by_location", query: "page=1&per_page=1&lat=#{geo[:lat]}&lng=#{geo[:lng]}")
 
   url = "http://www.refugerestrooms.org/api/v1/restrooms/by_location?page=1&per_page=5&lat=#{geo[:lat]}&lng=#{geo[:lng]}"
 
   response = RestClient.get(url)
   body = response.body
   parsed = JSON.parse(body)
-
-
+  bathrooms = []
+  nearby_rr = parsed.map{|x| Restroom.find_or_create_by(name: x["name"], address: x["street"])}
   
-  
-  binding.pry
+  places = nearby_rr.map{|x| "#{x.name} located at #{x.address}" }
+  hash = {}
+  nearby_rr.map{|x| hash[x.name] = x.address }
+
+  @restroom_address = prompt.select("There are bathrooms at the following locations") do |m|
+    hash.each{|k,v| m.choice "#{k} located at #{v}", value: v}
+  end
+
+  #binding.pry
 end
   
-# result = prompt.collect do
-#   key(:name).ask("Name?")
 
-#   key(:age).ask("Age?", convert: :int)
-
-#   key(:address) do
-#     key(:street).ask("Street?", required: true)
-#     key(:city).ask("City?")
-#     key(:zip).ask("Zip?", validate: /\A\d{3}\Z/)
-#   end
-#end
 
   private
 
