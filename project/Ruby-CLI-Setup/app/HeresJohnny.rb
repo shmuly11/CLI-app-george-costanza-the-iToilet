@@ -231,13 +231,26 @@ end
 
 def locate
   location = prompt.collect do
-    key(:address).ask("Address?", required: true)
-    key(:city).ask("City?", required: true)
-    #key(:zip).ask("Zip?", validate: /\A\d{3}\Z/)
+    key(:address).ask("What is your current address?", required: true, validate: /\w|\s/)
+    key(:city).ask("In which city?", required: true, validate: /[a-z]|\s/)
   end
   place = location.map{|k,v| "#{v}"}.join(", ")
+  binding.pry
   map_response = location_request(place)
   geo = convert_to_geo(map_response)
+
+  binding.pry
+
+  # url = URI::HTTP.build(host: "www.refugerestrooms.org", path: "/api/v1/restrooms/by_location", query: "page=1&per_page=1&lat=#{geo[:lat]}&lng=#{geo[:lng]}")
+
+  url = "http://www.refugerestrooms.org/api/v1/restrooms/by_location?page=1&per_page=5&lat=#{geo[:lat]}&lng=#{geo[:lng]}"
+
+  response = RestClient.get(url)
+  body = response.body
+  parsed = JSON.parse(body)
+
+
+  
   
   binding.pry
 end
