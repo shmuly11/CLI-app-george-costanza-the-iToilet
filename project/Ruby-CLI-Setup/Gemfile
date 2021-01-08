@@ -8,11 +8,14 @@ gem "require_all"
 gem "sqlite3"
 gem "pry"
 gem "faker"
-
+gem "pastel"
 gem "colorize"
 
 gem 'activerecord-reset-pk-sequence'
 gem 'tty-prompt'
 gem 'kimurai'
+gem 'tty-font'
 
 gem 'mapquest'
+gem 'catpix'
+gem "audio-playback"
