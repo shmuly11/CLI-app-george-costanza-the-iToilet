@@ -87,7 +87,7 @@ end
     #     pic(w)
     #     sleep(0.3)
     # end
-    pic
+    
     font = TTY::Font.new(:straight)
     puts font.write("                                     anywhere in the city")
     
@@ -140,8 +140,10 @@ end
 
  def intro
     play
+    pic
     sleep(1.5)
     quote
+    sleep(0.3)
     quote_2
     sleep(1.5)
     title

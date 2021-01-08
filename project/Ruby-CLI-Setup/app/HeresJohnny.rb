@@ -23,7 +23,7 @@ class HeresJohnny
     #AudioPlayback.play("Seinfeld.wav")
     puts "You had to have the BIG salad!!!"
       sleep(1)
-    puts "My name is George! I am unemployed and i live with my parents."
+    puts "My name is George! I am unemployed and I live with my parents."
       sleep(1)
   end
 
@@ -63,7 +63,7 @@ class HeresJohnny
     puts "Here is an interesting fact about toilets."
       sleep(1)
     puts Fact.all.sample.content
-      sleep(4)
+      sleep(6)
     main_menu
   end
 
@@ -73,7 +73,7 @@ class HeresJohnny
       puts "If it wasn’t for the toilet, there would be no books."
       sleep(0.5)
       puts "This is not an app about nothing! Go to your bathroom!"
-      sleep(1)
+      sleep(3)
     in_session
   end
 
@@ -109,14 +109,14 @@ _H_          <$>   <$>           _H_           <#>   <#>          _H_
 --
 ------------------------------------------------------------------------
 "
-      sleep(7)
+      sleep(9)
     leave_review
   end
 
   def leave_review
     system 'clear'
 
-    satisfied = prompt.yes?("Welcome back! Now you listen to me. I want details and i want them right now. Are you going to leave a review?")
+    satisfied = prompt.yes?("Welcome back! Now you listen to me. I want details and I want them right now. Are you going to leave a review?")
       if satisfied 
     review
       else 
