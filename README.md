@@ -1,4 +1,4 @@
-## Ruby CLI stub repo
+## Ruby CLI stub repo potato
 
 ### NOTE
 - this setup contains a rakefile with helpful process reminders
