@@ -1,8 +1,9 @@
 require 'mapquest'
 require 'pry'
 
+# binding.pry
 # Instantiate the API using an API key
-$mapquest = MapQuest.new("pD0NRdSBTXF028j7ZIAaU6HcV1DGAW8O")
+$mapquest = MapQuest.new(ENV["MAPQUEST"])
 
 def location_request(address_input)
     data = $mapquest.geocoding.address(address_input)

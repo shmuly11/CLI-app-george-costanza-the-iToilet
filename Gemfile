@@ -15,7 +15,9 @@ gem 'activerecord-reset-pk-sequence'
 gem 'tty-prompt'
 gem 'kimurai'
 gem 'tty-font'
+gem "figaro"
+gem "dotenv"
 
 gem 'mapquest'
-gem 'catpix'
+# gem 'catpix'
 gem "audio-playback"

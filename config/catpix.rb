@@ -1,7 +1,7 @@
-require 'catpix'
+# require 'catpix'
 require "audio-playback"
-require "tco"
-require "rmagick"
+# require "tco"
+# require "rmagick"
 require "colorize"
 require 'pastel'
 require 'tty-font'

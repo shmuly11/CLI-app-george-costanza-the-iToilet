@@ -5,7 +5,6 @@ class HeresJohnny
 
   def  initialize
     @prompt = TTY::Prompt.new
-    #@begin = Start.new
   end
       
   def run
@@ -20,7 +19,7 @@ class HeresJohnny
   end
 
   def welcome
-    #AudioPlayback.play("Seinfeld.wav")
+    
     puts "You had to have the BIG salad!!!"
       sleep(1)
     puts "My name is George! I am unemployed and I live with my parents."
@@ -130,8 +129,10 @@ _H_          <$>   <$>           _H_           <#>   <#>          _H_
       new_rating = review_helper
       if new_rating < 3
         puts "I think, that you think, that a certain something is not all that it could be. When in fact, it is all that it should be... AND MORE"
+        sleep(5)
       else
         puts "These reviews are making me thirsty!"
+        sleep(4)
       end
     new_review = Review.find_or_create_by(user_id: @user.id, restroom_id: @used_restroom.id)
     new_review.update(rating: new_rating) 
