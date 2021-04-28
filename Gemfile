@@ -19,5 +19,4 @@ gem "figaro"
 gem "dotenv"
 
 gem 'mapquest'
-# gem 'catpix'
 gem "audio-playback"

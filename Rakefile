@@ -1,7 +1,7 @@
 require_relative './config/environment'
 require_relative './config/trivia_scraper'
 require_relative './config/zip_code'
-require_relative './config/catpix'
+require_relative './config/intro'
 
 require_relative './instructions_data.rb'
 

@@ -1,7 +1,5 @@
-# require 'catpix'
+
 require "audio-playback"
-# require "tco"
-# require "rmagick"
 require "colorize"
 require 'pastel'
 require 'tty-font'
@@ -12,14 +10,10 @@ class Start
 def play 
 AudioPlayback.play("Seinfeld.wav")
 end
-#sleep(1.5)
-# # Play in the foreground
-# @playback.block
-#.colorize(:color => :red)
+
 pastel = Pastel.new
 
-# puts "anywhere in the city"
-# sleep(1)
+
 def title
 puts "
             ███╗   ███╗ █████╗  ██████╗ ███╗   ██╗██╗███████╗██╗ ██████╗███████╗███╗   ██╗████████╗
@@ -79,36 +73,16 @@ end
 
  end
  
- def quote
-    # line = ["anywhere", "in", "the", "city"]
-    # #binding.pry
-    # line.each do |w|
-    #     system 'clear'
-    #     pic(w)
-    #     sleep(0.3)
-    # end
-    
+ def quote 
     font = TTY::Font.new(:straight)
     puts font.write("                                     anywhere in the city")
     
- sleep(1.2)
-#  system 'clear'
-#  pic
-#  puts font.write("anywhere in")
-#  sleep(0.3)
-#  system 'clear'
-#  pic
-#  puts font.write("anywhere in the")
-#  sleep(0.2)
-#  system 'clear'
-#  pic
-#  puts font.write("anywhere in the city")
-#  sleep(0.1)
-
+   sleep(1.2)
 end
 
 def quote_2
-    font = TTY::Font.new(:straight)
+
+ font = TTY::Font.new(:straight)
  system 'clear'
  puts font.write("I'll")
  sleep(0.4)
@@ -131,12 +105,7 @@ def quote_2
  puts font.write("I'll tell you the best public toilet")
 end
  
- #sleep(1.5)
-# def mag
-#  puts title
-# end
 
- #sleep(3)
 
  def intro
     play
